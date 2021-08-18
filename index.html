@@ -47,7 +47,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <ul class="p-1 rounded">
+                        <ul class="px-2">
                             <li>股票手續費為0.001425</li>
                             <li>証交稅為0.003</li>
                             <li>預設手續費折數為六折</li>
@@ -90,18 +90,34 @@
                             <tr v-for="item in comArray" :key="item">
 
                                 <td>{{item}}</td>
-
-                                <td v-if="buy*amount*0.001425*self>20">
-                                    {{item*amount-buy*amount-buy*amount*0.001425*self-sell*amount*stock}}</td>
-
-                                <td v-else>{{item*amount-buy*amount-20-20-sell*amount*stock}}</td>
-
-
-                                <td v-if="buy*amount*0.001425*self>20">
-                                    {{Math.round((item*amount-buy*amount-buy*amount*0.001425*self-sell*amount*stock)/(buy*amount+buy*amount*0.001425*self+item*amount*stock)*10000)/100+"%"}}
-                                </td>
+                                
+                                <!-- 購買手續大於20,並且售出手續費大於20-->
+                                <td v-if="(buy*amount*0.001425*self>20)&&(item*amount*0.001425*self>20)">
+                                    {{Math.floor((item*amount)-(buy*amount)-(item*amount*0.001425*self)-(buy*amount*0.001425*self)-(item*amount*stock))}}</td>
+                                <!-- 購買手續大於20,並且售出手續費小於20-->
+                                <td v-else-if="(buy*amount*0.001425*self>20)&&(item*amount*0.001425*self<20)">
+                                    {{Math.floor((item*amount)-(buy*amount)-20-(buy*amount*0.001425*self)-(item*amount*stock))}}</td>
+                                <!-- 購買手續小於20,並且售出手續費大於20-->
+                                <td v-else-if="(buy*amount*0.001425*self<20)&&((item*amount*0.001425*self)>20)">
+                                    {{Math.floor((item*amount)-(buy*amount)-(item*amount*0.001425*self)-20-(item*amount*stock))}}</td>
+                                <!-- 購買手續小於20,並且售出手續費小於20-->
                                 <td v-else>
-                                    {{Math.round((item*amount-buy*amount-20-20-sell*amount*stock)/(buy*amount+buy*amount*0.001425*self+item*amount*stock)*10000)/100+"%"}}
+                                    {{Math.floor((item*amount)-(buy*amount)-20-20-(item*amount*stock))}}
+                                </td>
+
+                                
+                                <!-- 購買手續大於20,並且售出手續費大於20-->
+                                <td v-if="(buy*amount*0.001425*self>20)&&(item*amount*0.001425*self>20)">
+                                    {{Math.round(((item*amount)-(buy*amount)-(item*amount*0.001425*self)-(buy*amount*0.001425*self)-(item*amount*stock))/(buy*amount+(buy*amount*0.001425*self)+(item*amount*0.001425*self)+item*amount*stock)*10000)/100+'%'}}</td>
+                                <!-- 購買手續大於20,並且售出手續費小於20-->
+                                <td v-else-if="(buy*amount*0.001425*self>20)&&(item*amount*0.001425*self<20)">
+                                    {{Math.round(((item*amount)-(buy*amount)-20-(buy*amount*0.001425*self)-(item*amount*stock))/(buy*amount+(buy*amount*0.001425*self)+20+item*amount*stock)*10000)/100+'%'}}</td>
+                                <!-- 購買手續小於20,並且售出手續費大於20-->
+                                <td v-else-if="(buy*amount*0.001425*self>20)&&(item*amount*0.001425*self<20)">
+                                    {{Math.round(((item*amount)-(buy*amount)-20-(buy*amount*0.001425*self)-(item*amount*stock))/(buy*amount+(item*amount*0.001425*self)+20+item*amount*stock)*10000)/100+'%'}}</td>
+                                <!-- 購買手續小於20,並且售出手續費小於20-->
+                                <td v-else>
+                                    {{Math.round(((item*amount)-(buy*amount)-20-(buy*amount*0.001425*self)-(item*amount*stock))/(buy*amount+20+20+item*amount*stock)*10000)/100+'%'}}</td>
                                 </td>
                             </tr>
                         </tbody>

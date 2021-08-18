@@ -11487,7 +11487,7 @@ body {
   background-color: rgba(245, 236, 236, 0.7);
 }
 
-ol > li {
+ul > li {
   list-style: none;
 }
 
